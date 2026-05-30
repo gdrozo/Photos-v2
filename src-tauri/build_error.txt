@@ -1,0 +1,28 @@
+﻿cargo : warning: unused import: `metadata`
+At line:1 char:1
++ cargo check 2>&1 | Out-File -FilePath build_error.txt -Encoding utf8
++ ~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (warning: unused import: `meta 
+   data`:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  --> src\server.rs:14:10
+   |
+14 |     fs::{metadata, File},
+   |          ^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` on by default
+
+warning: function `getWindowsThumbnail` should have a snake case name
+   --> src\server.rs:145:8
+    |
+145 | pub fn getWindowsThumbnail(path: String, size: i32) -> 
+Option<Vec<u8>> {
+    |        ^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake 
+case: `get_windows_thumbnail`
+    |
+    = note: `#[warn(non_snake_case)]` on by default
+
+warning: `photos-v2` (lib) generated 2 warnings (run `cargo fix --lib -p 
+photos-v2` to apply 1 suggestion)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.90s

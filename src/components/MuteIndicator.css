@@ -1,0 +1,27 @@
+.pop-up-animation {
+  animation: pop-up 1s ease-in-out, pop-up-reverse 1s ease-in-out 2s forwards;
+}
+
+@keyframes pop-up {
+  0% {
+    /* transform: scale(0); */
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pop-up-reverse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}

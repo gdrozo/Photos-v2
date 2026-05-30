@@ -1,0 +1,49 @@
+//server.rs
+use axum::{
+    extract::Query,
+    response::{IntoResponse, Response},
+    http::StatusCode,
+};
+
+use axum_extra::body::AsyncReadBody;
+use tokio::fs::File;
+use mime_guess::from_path;
+use std::collections::HashMap;
+
+
+async fn stream_video(Query(params): Query<HashMap<String, String>>) -> Response {
+    let Some(path) = params.get("path") else {
+        return (StatusCode::BAD_REQUEST, "Missing path").into_response();
+    };
+
+    let Ok(file) = File::open(path).await else {
+        return (StatusCode::NOT_FOUND, "File not found").into_response();
+    };
+
+    let mime = from_path(path).first_or_octet_stream();
+    let body = AsyncReadBody::new(file);
+
+    (
+        StatusCode::OK,
+        [("Content-Type", mime.as_ref()), ("Accept-Ranges", "bytes")],
+        body,
+    )
+        .into_response()
+}
+
+pub async fn start_server() {
+    use axum::{routing::get, Router};
+    use tokio::net::TcpListener;
+
+    let app = Router::new().route("/video", get(stream_video));
+
+    println!("Starting local video server on http://127.0.0.1:3001");
+
+    let listener = TcpListener::bind("127.0.0.1:3001")
+        .await
+        .expect("Failed to bind to address");
+
+    axum::serve(listener, app.into_make_service())
+        .await
+        .expect("Server crashed");
+}
