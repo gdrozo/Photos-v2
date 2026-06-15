@@ -1,2 +1,5 @@
 node_modules
 dist
+Server_Test/target/flycheck0/stderr
+Server_Test/target/flycheck0/stderr
+Server_Test/target/flycheck0/stdout
