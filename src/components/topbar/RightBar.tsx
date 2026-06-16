@@ -1,13 +1,13 @@
 import { Cog } from 'lucide-solid'
-import { getCurrentWindow } from '@tauri-apps/api/window'
+import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow'
 // @ts-ignore: SVG module declarations may not exist in this project setup
-import close from './assets/close.svg'
+import closeIcon from './assets/close.svg'
 // @ts-ignore: SVG module declarations may not exist in this project setup
-import minimize from './assets/minimize.svg'
+import minimizeIcon from './assets/minimize.svg'
 // @ts-ignore: SVG module declarations may not exist in this project setup
-import maximize from './assets/maximize.svg'
+import maximizeIcon from './assets/maximize.svg'
 // @ts-ignore: SVG module declarations may not exist in this project setup
-import restore from './assets/restore.svg'
+import restoreIcon from './assets/restore.svg'
 
 import TranslucentPanel from '../../generics/TranslucentPanel'
 import { Accessor, createSignal, Setter } from 'solid-js'
@@ -19,7 +19,7 @@ interface RightBarProps {
 }
 
 function RightBar({ show, showConfig }: RightBarProps) {
-  const appWindow = getCurrentWindow()
+  const appWindow = getCurrentWebviewWindow()
   const [minimized, setMinimized] = createSignal(false)
 
   return (
@@ -32,7 +32,7 @@ function RightBar({ show, showConfig }: RightBarProps) {
         }
       >
         <button
-          class='opacity-70 hover:opacity-100 | toHide'
+          class='opacity-70 hover:opacity-100 hidden | toHide'
           onClick={() => showConfig(true)}
         >
           <Cog class='size-5 stroke-[1.5px]' />
@@ -43,7 +43,7 @@ function RightBar({ show, showConfig }: RightBarProps) {
             title='minimize'
             onClick={() => appWindow.minimize()}
           >
-            <img class='size-3' src={minimize} alt='' />
+            <img class='size-3' src={minimizeIcon} alt='' />
           </button>
           <button
             id='titlebar-maximize'
@@ -54,9 +54,9 @@ function RightBar({ show, showConfig }: RightBarProps) {
             }}
           >
             {minimized() ? (
-              <img class='size-3' src={restore} alt='' />
+              <img class='size-3' src={restoreIcon} alt='' />
             ) : (
-              <img class='size-3' src={maximize} alt='' />
+              <img class='size-3' src={maximizeIcon} alt='' />
             )}
           </button>
 
@@ -65,7 +65,7 @@ function RightBar({ show, showConfig }: RightBarProps) {
             title='close'
             onClick={() => appWindow.close()}
           >
-            <img class='size-3' src={close} alt='' />
+            <img class='size-3' src={closeIcon} alt='' />
           </button>
         </div>
       </TranslucentPanel>

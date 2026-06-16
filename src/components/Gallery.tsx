@@ -1,4 +1,13 @@
-import { Component, For, Show, createEffect, createMemo, createSignal, onCleanup, onMount } from 'solid-js'
+import {
+  Component,
+  For,
+  Show,
+  createEffect,
+  createMemo,
+  createSignal,
+  onCleanup,
+  onMount,
+} from 'solid-js'
 import { MediaInfo } from '../types/media'
 import { Video } from 'lucide-solid'
 
@@ -52,7 +61,10 @@ const Gallery: Component<GalleryProps> = props => {
 
   const layout = createMemo(() => {
     const width = Math.min(containerWidth(), 1600 + PADDING) - PADDING
-    const columns = Math.max(1, Math.floor((width + GAP) / (MIN_ITEM_WIDTH + GAP)))
+    const columns = Math.max(
+      1,
+      Math.floor((width + GAP) / (MIN_ITEM_WIDTH + GAP)),
+    )
     const itemWidth = (width - (columns - 1) * GAP) / columns
     const rowHeight = itemWidth + GAP
     return { columns, rowHeight }
@@ -75,17 +87,20 @@ const Gallery: Component<GalleryProps> = props => {
   const displayRange = createMemo(() => {
     const { columns, rowHeight } = layout()
     const viewportHeight = containerRef?.clientHeight || 800
-    
+
     const startRow = Math.floor(scrollTop() / rowHeight)
     const visibleRows = Math.ceil(viewportHeight / rowHeight)
-    
+
     // We want ~50 images around the visible area
     // 50 images is roughly (50 / columns) rows
     const bufferRows = Math.max(2, Math.ceil(25 / columns))
-    
+
     const start = Math.max(0, (startRow - bufferRows) * columns)
-    const end = Math.min(props.images.length, (startRow + visibleRows + bufferRows) * columns)
-    
+    const end = Math.min(
+      props.images.length,
+      (startRow + visibleRows + bufferRows) * columns,
+    )
+
     return { start, end }
   })
 
@@ -120,11 +135,11 @@ const Gallery: Component<GalleryProps> = props => {
       <div
         ref={containerRef}
         onScroll={e => setScrollTop(e.currentTarget.scrollTop)}
-        class='fixed inset-0 bg-black/95 overflow-y-auto p-4 pt-24 animate-in fade-in duration-200 z-10'
+        class='fixed inset-0 bg-black/95 overflow-y-auto p-4 pt-24 animate-in fade-in duration-200 z-10 custom-scrollbar'
         tabIndex={0}
       >
         <div style={containerStyle()}>
-          <div 
+          <div
             class='grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4 max-w-[1600px] mx-auto'
             style={gridStyle()}
           >

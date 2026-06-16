@@ -63,8 +63,6 @@ function Viewer(props: ViewerProps) {
     setPosition(0)
     setDuration(0)
 
-    console.log('Viewer')
-
     if (props.ref) {
       props.ref({
         seek: (forward: boolean) => {

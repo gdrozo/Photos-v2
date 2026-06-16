@@ -9,6 +9,7 @@ import {
   watchDirectory,
   onDirectoryChanged,
   listMediaFiles,
+  moveAs,
 } from '../util/fileUtil'
 import { setRating as saveRating } from '../util/ratingUtil'
 import { createEffect, createSignal, onCleanup } from 'solid-js'
@@ -33,7 +34,7 @@ export default function useGallery(sort_by: SortByOptions) {
   const [lastOpenFolder, setLastOpenFolder] =
     useConfiguration('last_open_folder')
 
-  let reloadVersion = 0
+  window.reloadVersion = 0
 
   const [lastDirection, setLastDirection] = createSignal<string | undefined>(
     undefined,
@@ -81,9 +82,12 @@ export default function useGallery(sort_by: SortByOptions) {
       unlisten = await onDirectoryChanged(payload => {
         let ver = parseInt(payload.payload)
 
-        if (reloadVersion >= ver) return
+        console.log('reloadVersion: ' + window.reloadVersion)
+        console.log('ver: ' + ver)
 
-        reloadVersion = ver
+        if (window.reloadVersion >= ver) return
+
+        window.reloadVersion = ver
         const folder = folderPath()
         if (!folder) return
 
@@ -234,7 +238,7 @@ export default function useGallery(sort_by: SortByOptions) {
 
   async function nukeImage() {
     if (imageIndex() === null) return
-    reloadVersion++
+    window.reloadVersion++
     // will throw if index invalid, but keep same behaviour as original
     const success = await nukeFile(imagesState()[imageIndex() || 0]?.path)
 
@@ -430,6 +434,22 @@ export default function useGallery(sort_by: SortByOptions) {
     })
   }
 
+  async function moveFile(path: string, defaultDir?: string) {
+    window.reloadVersion++
+
+    const result = await moveAs(path, defaultDir)
+    if (result === false) {
+      window.reloadVersion--
+      return false
+    }
+
+    console.log('File moved to ' + result)
+
+    console.log('reloadVersion: ' + window.reloadVersion)
+
+    return result
+  }
+
   return {
     folderPath,
     imagesState,
@@ -460,5 +480,6 @@ export default function useGallery(sort_by: SortByOptions) {
     moveToEnd: (index: number) => moveToExtreme(index, 'end'),
     lastDirection,
     setLastDirection,
+    moveFile,
   }
 }

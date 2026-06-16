@@ -63,10 +63,13 @@ function App() {
 
     let result: string | boolean | undefined
     if (e.shiftKey) {
-      result = await moveAs(src, lastSaveFolder())
+      console.log('moving')
+      result = await gallery.moveFile(src, lastSaveFolder())
     } else {
       result = await saveAs(src, lastSaveFolder())
     }
+
+    if (result === false) return
 
     if (result && typeof result === 'string') {
       const folder = result.substring(0, result.lastIndexOf('\\'))

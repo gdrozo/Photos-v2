@@ -41,7 +41,6 @@ export default function PositionIndicator(props: PositionIndicatorProps) {
 
   createEffect(() => {
     const d = props.duration()
-    console.log('duration', d)
 
     setShow(true)
   })

@@ -54,7 +54,6 @@ export async function moveAs(
 export async function nukeFile(filePath: string): Promise<boolean> {
   try {
     await invoke('delete_file', { path: filePath })
-    console.log('File deleted successfully')
     return true
   } catch (err) {
     console.error('Failed to delete file:', err)
@@ -112,7 +111,6 @@ async function copyMediaFile(src: string, dst: string) {
       src: src,
       dst: dst,
     })
-    console.log('File moved successfully')
   } catch (err) {
     console.error('Failed to move file:', err)
   }
@@ -129,7 +127,6 @@ export async function showInFolder(filePath: string) {
 export async function watchDirectory(path: string): Promise<void> {
   try {
     await invoke('watch_directory', { dir: path })
-    console.log('Started watching directory:', path)
   } catch (err) {
     console.error('Failed to watch directory:', err)
   }
@@ -139,7 +136,6 @@ export async function onDirectoryChanged(
   callback: (payload: any) => void,
 ): Promise<UnlistenFn> {
   return await listen('dir-change', payload => {
-    console.log('Directory changed event received')
     callback(payload)
   })
 }
