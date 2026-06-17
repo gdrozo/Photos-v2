@@ -69,6 +69,8 @@ function App() {
       result = await saveAs(src, lastSaveFolder())
     }
 
+    console.log('Result of move: ', result)
+
     if (result === false) return
 
     if (result && typeof result === 'string') {
@@ -77,6 +79,8 @@ function App() {
     }
 
     const direction = gallery.lastDirection()
+    gallery.removeMedia()
+
     if (direction === 'right') {
       gallery.onRightClick()
     } else if (direction === 'left') {
