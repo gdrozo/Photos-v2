@@ -69,6 +69,22 @@ export default function useGallery(sort_by: SortByOptions) {
     const folder = folderPath()
     if (folder) {
       watchDirectory(folder)
+      try {
+        const recentStr = localStorage.getItem('recent_folders')
+        let recent: string[] = []
+        if (recentStr) {
+          recent = JSON.parse(recentStr)
+          if (!Array.isArray(recent)) {
+            recent = []
+          }
+        }
+        recent = recent.filter((f) => f !== folder)
+        recent.unshift(folder)
+        recent = recent.slice(0, 5)
+        localStorage.setItem('recent_folders', JSON.stringify(recent))
+      } catch (e) {
+        console.error('Error saving recent folder:', e)
+      }
     }
   })
 
@@ -366,6 +382,11 @@ export default function useGallery(sort_by: SortByOptions) {
     })
   }
 
+  function openFolderByPath(folder: string) {
+    setOpenType(OpenType.Folder)
+    internalOpenFolderRecusive(folder)
+  }
+
   async function updateRating(index: number, rating: number) {
     const item = imagesState()[index]
     if (!item) return
@@ -470,6 +491,7 @@ export default function useGallery(sort_by: SortByOptions) {
     savePosition,
     restorePosition,
     openFolder: openFolderRecusive,
+    openFolderByPath,
     setFolderPath,
     setImagesState,
     setImageIndex,

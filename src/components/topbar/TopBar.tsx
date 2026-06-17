@@ -11,6 +11,7 @@ import { Accessor, Setter } from 'solid-js'
 interface TopBarProps {
   openImage: () => void
   openFolder: () => void
+  openFolderByPath: (folder: string) => void
   savePosition: () => void
   restorePosition: () => void
   onDelete: () => void
@@ -51,6 +52,7 @@ function TopBar(props: TopBarProps) {
         <LeftBar
           openImage={props.openImage}
           openFolder={props.openFolder}
+          openFolderByPath={props.openFolderByPath}
           restorePosition={props.restorePosition}
           savePosition={props.savePosition}
           onDelete={props.onDelete}

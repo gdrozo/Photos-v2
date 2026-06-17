@@ -169,6 +169,7 @@ function App() {
           gallery.setOpenType(OpenType.Folder)
           gallery.openFolder()
         }}
+        openFolderByPath={gallery.openFolderByPath}
         imageName={imageName()}
         savePosition={gallery.savePosition}
         restorePosition={gallery.restorePosition}
